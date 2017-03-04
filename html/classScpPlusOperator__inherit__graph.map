@@ -1,0 +1,4 @@
+<map id="ScpPlusOperator&lt; TVar &gt;" name="ScpPlusOperator&lt; TVar &gt;">
+<area shape="rect" id="node2" href="$classScpHostTOperator.html" title="Generic Template class for implementing operators like assignment or addition." alt="" coords="5,81,189,109"/>
+<area shape="rect" id="node3" href="$classScpHostOp.html" title="Interface for building operators that get imported from the host environment (C++ end) into the scrip..." alt="" coords="52,5,143,33"/>
+</map>

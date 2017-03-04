@@ -1,0 +1,7 @@
+<map id="ScpEval" name="ScpEval">
+<area shape="rect" id="node2" href="$structScpEvalOu.html" title="Output params on evaluate. Eg. .eval6()." alt="" coords="38,189,126,217"/>
+<area shape="rect" id="node3" href="$classScpValue.html" title="Base for all values." alt="" coords="5,97,84,125"/>
+<area shape="rect" id="node4" href="$structScpErr.html" title="ScpErr" alt="" coords="108,97,171,125"/>
+<area shape="rect" id="node5" href="$structScpSp.html" title="String piece class and some utility routines." alt="" coords="109,5,170,33"/>
+<area shape="rect" id="node6" href="$classScpScope.html" title="Abstract class that ScpScript implements." alt="" coords="150,189,233,217"/>
+</map>

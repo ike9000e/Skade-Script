@@ -1,0 +1,5 @@
+<map id="ScpEvalOu" name="ScpEvalOu">
+<area shape="rect" id="node2" href="$classScpValue.html" title="Base for all values." alt="" coords="5,97,84,125"/>
+<area shape="rect" id="node3" href="$structScpErr.html" title="ScpErr" alt="" coords="108,97,171,125"/>
+<area shape="rect" id="node4" href="$structScpSp.html" title="String piece class and some utility routines." alt="" coords="109,5,170,33"/>
+</map>
