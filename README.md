@@ -4,4 +4,4 @@ Welcome to the C++ scripting mini engine that aims to implement a handfull set o
 
 # Documentation main page is available [here](https://ikk00.github.io/Skade-Script/)
 
-Short example can be viewed [here](https://ikk00.github.io/Skade-Script/html/index.html#example_sec).
+View short example from the documentation [here](https://ikk00.github.io/Skade-Script/html/index.html#example_sec).
