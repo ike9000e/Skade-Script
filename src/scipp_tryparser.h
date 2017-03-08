@@ -6,6 +6,7 @@
 
 struct ScpParse; struct ScpParseOu; class ScpIExpr; class ScpErr;
 class ScpTryProgramParse; struct ScpEvalPair; struct ScpHof;
+struct ScpEvalCallAndArgs; struct ScpHoc;
 
 /// String piece class and some utility routines.
 struct ScpSp {
@@ -76,7 +77,6 @@ public:
 	ScpTry1stOkExpr& addTryParser( ScpITryParser* inp, bool bOwnAndDelete );
 	virtual bool tryy( const ScpParse& inp );
 private:
-	//std::vector<ScpITryParser*> Parsers2_;
 	std::vector<std::pair<ScpITryParser*,bool> > Parsers2;
 };
 
@@ -86,9 +86,11 @@ struct ScpParse {
 	ScpParseOu&          out3;
 	ScpTryProgramParse*  prgrm;
 	ScpParse( const ScpParse& inp, const ScpTCITR& tb2, const ScpTCITR& te2, ScpParseOu& ou2 );
+	ScpParse( const ScpParse& inp, const ScpTCITR& tb2 );
 	ScpParse( const ScpTCITR& tb2, const ScpTCITR& te2, ScpParseOu& ou2, ScpTryProgramParse* prgrm_ );
 	void errClear( const ScpErr& err2 )const;
 	void clear2()const;
+	ScpIExpr* extractExpr()const;
 };
 
 struct ScpParseOu {
@@ -117,11 +119,12 @@ enum {
 	SCP_EE_EofOnParse = 100, SCP_EE_UnexpTk2, SCP_EE_UnexpTk3, SCP_EE_EofNoBrace,
 	SCP_EE_UnkExpr, SCP_EE_NoSemicln, SCP_EE_UnparsableExpr, SCP_EE_EofOnAxB,
 	SCP_EE_EofOnAxB2, SCP_EE_NotOperOnAxB, SCP_EE_NotOperOnAsgnmt, SCP_EE_NotOperOnAsgnmt2,
-	SCP_EE_AxBExprParseFailed, SCP_EE_NoGroupCloseHere, SCP_EE_NoGroupCloseHere2,
-	SCP_EE_GroupingNoInner,
+	SCP_EE_AxBExprParseFailed, SCP_EE_NoGroupCloseHere, SCP_EE_NoGroupCloseHere2, SCP_EE_GroupingNoInner,
+	SCP_EE_ArgListNoAsgmntExpr, SCP_EE_NoCommaOrPClHere, SCP_EE_NoCommaOrPClHere2,
 	// on evaluator.
 	SCP_EE_UserEvalNull = 200, SCP_EE_UndefVar2, SCP_EE_UnknownOp, SCP_EE_UnkExpr3,
-	SCP_EE_NoSuchHostObject, SCP_EE_NoSuchHostOper,
+	SCP_EE_NoSuchHostObject, SCP_EE_NoSuchHostObject2, SCP_EE_NoSuchHostOper, SCP_EE_NoSuchHostObject3,
+	SCP_EE_UnkErrOnUsrCall, SCP_EE_UsrCallNotImpl,
 };
 /**
 	String-argument-replacement class.
@@ -156,6 +159,7 @@ private:
 */
 class ScpScope{ public:
 	virtual bool evalHostObjectPair( const ScpEvalPair& inp ) = 0;
+	virtual bool evalHostFunctionCall( const ScpEvalCallAndArgs& inp ) = 0;
 };
 /**
 	Interface for building operators that get imported from the
@@ -172,8 +176,9 @@ class ScpHostOp{ public:
 template<class T>
 struct ScpAutoPtr{
 	ScpAutoPtr( T* inp ) : Ptr(inp) {}
-	virtual ~ScpAutoPtr() {delete Ptr; Ptr = 0;}
-	T* operator()()const {return Ptr;}
+	virtual ~ScpAutoPtr()      {if(Ptr) delete Ptr; Ptr = 0;}
+	T* operator()()const       {return Ptr;}
+	void setPointer( T* inp )  {Ptr = inp;}
 private:
 	T* Ptr;
 };
@@ -181,7 +186,8 @@ private:
 /// scripts.
 /// \sa \ref pgHostObjects
 class ScpHostObject { public:
-	virtual ~ScpHostObject() {}
+	virtual      ~ScpHostObject() {}
+	virtual bool evaluateFunctionCall( const ScpHoc& inp );
 };
 struct ScpHof{
 	ScpHostObject*  lval;
@@ -194,6 +200,34 @@ struct ScpHof{
 	int*            iErrIs;
 	/// Error code, eg: \ref SCP_EE_Unknown.
 	int*            eErr;
+};
+
+/**
+	Parameters on host object function call.
+	In particuar, parameters for ScpHostObject::evaluateFunctionCall().
+	This is the structute that, on functiona call, passes
+	function arguments from the script into the C++ object.
+*/
+struct ScpHoc {
+	/// Number of arguments in the 'argvv' member.
+	int                   argvc;
+	/// The arguments. Pointers are likely to be upcasted (dynamic_cast)
+	/// into expected user types.
+	ScpHostObject*const*  argvv;
+	/// Used on error. Tells which argument triggers the error or if error
+	/// is caused by the object call is performed on.
+	/// Value 0 indicates error caused by the host object itself.
+	/// Value >= 1 instead, tells that error is caused by one of the arguments
+	/// ('argvv').
+	int*                  iErrIs;
+	/// Error code, defaults to \ref SCP_EE_UnkErrOnUsrCall.
+	int*                  eErr;
+	/// Return value, if any, as result of the evaluation.
+	/// Defaults to 0, which indicates no return value,
+	/// aka. 'void' return value.
+	/// Currently, should be set to 0. Other functonality requires
+	/// more testing.
+	ScpHostObject**       retval;
 };
 
 #endif // _SCIPP_TRYPARSER_H_

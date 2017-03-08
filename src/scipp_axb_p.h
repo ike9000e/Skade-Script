@@ -9,7 +9,10 @@ class ScpTryProgramParse;
 	Expression -> AssignmentExpression->...-> BitwiseANDExpression
 	->...-> EqualityExpression->...-> AdditiveExpression
 	-> MultiplicativeExpression-> UnaryExpression-> PostfixExpression
-	-> LeftHandSideExpression->...-> MemberExpression -> PrimaryExpression
+	-> LeftHandSideExpression->...
+	-> CallExpression -> MemberExpression -> PrimaryExpression
+
+	CallExpression
 
 	MultiplicativeExpression : See section 11.5
 		UnaryExpression
@@ -91,6 +94,34 @@ public:
 	virtual ScpITryParser* getInnerExprParser();
 private:
 	ScpTCITR LastTokenAt;
+};
+
+/*
+	CallExpression :
+		MemberExpression Arguments
+		CallExpression Arguments
+		CallExpression [ Expression ]
+		CallExpression . Identifier
+
+	Arguments :
+		( )
+		( ArgumentList )
+
+	ArgumentList :
+		AssignmentExpression
+		ArgumentList , AssignmentExpression
+*/
+class ScpTryCallExpr : public ScpITryParser {
+public:
+	ScpTryCallExpr() {}
+	virtual bool tryy( const ScpParse& inp );
+private:
+	;
+};
+class ScpTryArgumentsExpr : public ScpITryParser {
+public:
+	ScpTryArgumentsExpr() {}
+	virtual bool tryy( const ScpParse& inp );
 };
 
 #endif // _HF_SCIPP_MUL_A_H_

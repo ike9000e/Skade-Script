@@ -41,6 +41,7 @@ public:
 	void             setOptions( int flags2 );
 private:
 	virtual bool     evalHostObjectPair( const ScpEvalPair& inp );
+	virtual bool     evalHostFunctionCall( const ScpEvalCallAndArgs& inp );
 	bool             tokenize2( ScpErr& err );
 	bool             eval9( int flags4, ScpErr& err );
 	bool             preprocessCondDefs( ScpErr& err );
@@ -121,6 +122,8 @@ enum{
 	/// is trimmed down from the right, in case if it ends up being
 	/// longer than some predefined length.
 	SCP_SF_NoErrLineRTrim = 0x8,
+	/// If set, disables pseudo preprocessor.
+	SCP_SF_DisablePreproc = 0x10,
 };
 
 #endif //_SCIPP_SCRIPT_H_

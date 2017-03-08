@@ -5,7 +5,7 @@
 #include "scipp_expr.h"
 
 const char* ScpSp::Whs = "\r\n\t\x20";
-const char* ScpSp::Ops = ";*/%=+-()#";
+const char* ScpSp::Ops = ";*/%=+-()#,";
 const char* ScpSp::Wrd2 = "_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char* ScpSp::Wrd3 = "0123456789";
 
@@ -59,6 +59,11 @@ ScpParse( const ScpParse& inp, const ScpTCITR& tb2, const ScpTCITR& te2, ScpPars
 {
 }
 ScpParse::
+ScpParse( const ScpParse& inp, const ScpTCITR& tb2 )
+	: tokenbgn(tb2), tokenend(inp.tokenend), out3(inp.out3), prgrm(inp.prgrm)
+{
+}
+ScpParse::
 ScpParse( const ScpTCITR& tb2, const ScpTCITR& te2, ScpParseOu& ou2, ScpTryProgramParse* prgrm_ )
 	: tokenbgn(tb2), tokenend(te2), out3(ou2), prgrm(prgrm_)
 {
@@ -79,6 +84,12 @@ void ScpParse::clear2()const
 		out3.expr2 = 0;
 	}
 	out3.err = ScpErr();
+}
+ScpIExpr* ScpParse::extractExpr()const
+{
+	ScpIExpr* x = out3.expr2;
+	out3.expr2 = 0;
+	return x;
 }
 
 const std::string ScpStr::argname = "%a";
@@ -209,6 +220,27 @@ bool ScpToken::operator==( const ScpToken& otherr )const
 		if( !strncmp( tkn.ptr, otherr.tkn.ptr, tkn.len ) )
 			return 1;
 	}
+	return 0;
+}
+/**
+	Called when, in turn, function call is performed on the host object
+	from the script environment.
+
+	\param inp - See description of ScpHoc structure.
+
+	\return Return value indicates whenever script evaluating should
+	continue. Returning 0 stops evauating process of the entire script.
+
+	Defaul implementaion returns 0 and causes evaluating to stop.
+	A behaviour as if it was illegal to "call" the object from the script.
+
+	Currently, funtion call should not be part of other expression,
+	this feature requires more testing.
+*/
+bool ScpHostObject::evaluateFunctionCall( const ScpHoc& inp )
+{
+	*inp.iErrIs = 0;
+	*inp.eErr = SCP_EE_UsrCallNotImpl;
 	return 0;
 }
 

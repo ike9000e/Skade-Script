@@ -66,7 +66,8 @@ const ScpToken& ScpIExpr::getOpnToken()const
 }
 ScpPrnt& ScpPrnt::addTabs( int num )
 {
-	tbs += "\x20\x20\x20\x20";
+	for( int i=0; i<num; i++ )
+		tbs += "\x20\x20\x20\x20";
 	return *this;
 }
 ScpEval::ScpEval( const ScpEval& inp, ScpEvalOu& out_ )

@@ -111,171 +111,7 @@ ScpScript& ScpScript::clear3( int flags3 )
 	}
 	return *this;
 }
-/**
-	\mainpage
 
-	\section intro_sec Introduction
-
-	Welcome to the C++ scripting mini engine
-	that aims to implement a handfull set of features from the
-	<a href="https://www.ecma-international.org/ecma-262/5.1/">ECMA Script</a> specification.
-	A way to freely manipulate objects exported from the C++ using
-	arithmetic, parentheses or assignment operators.
-	Enables compilation independent scripting from external sources
-	an application can take input from, such as: config files, command-line,
-	UI controls, etc.
-
-	\htmlonly
-		<style>
-			.csScpStrpTblHdr table th{
-				background-color: white;
-				display: none;
-			};
-		</style>
-		<div class="csScpStrpTblHdr">  <!-- a:[58B6B1FF] -->
-	\endhtmlonly
-
-	&nbsp;                                                       | &nbsp;
-	------------------------------------------------------------ | ------------------
-	\ref ScpScript "ScpScript"                                   | Main class in the scripting engine.\n
-	\ref ScpScript::addHostObject() ".addHostObject()"           | Makes C++ objects visible in the scripts.
-	\ref ScpScript::addHostOperator() ".addHostOperator()"       | Adds operators, like '+' or '=', to the script environment.
-	\ref ScpScript::parse2() ".parse2()"                         | Starts script parsing.\n
-	\ref ScpScript::eval2() ".eval2()"                           | Evaluates parsed script.\n
-	\ref ScpScript::showMeTheError2() ".showMeTheError2()"       | Gets error info and shows it in the console STDOUT.\n
-	\ref ScpScript::showMeTheError3() ".showMeTheError3(bool)"   | Gets error info into the std::string.\n
-	\ref SCP_EE_Unknown "SCPEE*"                                 | Enumerated error types, on parse or on eval.
-	\htmlonly
-		</div> <!-- b:[58B6B1FF] -->
-	\endhtmlonly
-
-	<a HREF="annotated.html">Class list</a>\n
-	<a HREF="functions.html">Class members</a>\n
-
-
-	\section instructions_sec Instructions
-
-	Compile all source files with your program.
-
-
-	\section example_sec Script Parsing Example
-
-	\code
-		#include <stdio.h>
-		#include <string>
-		#include "scipp_script.h"
-		#include "scipp_hostobj.h"
-
-		class MyNumber : public ScpHostObject
-		{
-		public:
-			MyNumber( int ResultVal_=0 ) : ResultVal(ResultVal_) {}
-			virtual MyNumber operator*( const MyNumber& other ){
-				return MyNumber( ResultVal * other.ResultVal );
-			}
-			virtual MyNumber operator+( const MyNumber& other ){
-				return MyNumber( ResultVal + other.ResultVal );
-			}
-			int ResultVal;
-		};
-
-		int main()
-		{
-			std::string myCcode =
-				"// Script example to run. \n"
-				"v2 = v3 * v4         // simple arithmetic.\n"
-				"v4 = (v2 + v3) * v3  // use of parentheses to force\n"
-				"                     // operator '+' before '*'.";
-
-			ScpScript sci( myCcode );
-			if( !sci.parse2() ){
-				sci.showMeTheError2();
-				return 2;
-			}
-			MyNumber v2(2), v3(3), v4(4);
-			sci.addHostOperator( new ScpMultiplicativeOperator<MyNumber>, 1 );
-			sci.addHostOperator( new ScpAsssignmentOperator<MyNumber>, 1 );
-			sci.addHostOperator( new ScpPlusOperator<MyNumber>, 1 );
-			sci.addHostObject( "v2", &v2, 0 );
-			sci.addHostObject( "v3", &v3, 0 );
-			sci.addHostObject( "v4", &v4, 0 );
-			if( !sci.eval2() ){
-				sci.showMeTheError2();
-				return 3;
-			}
-			printf("v2: %d\n", v2.ResultVal );
-			printf("v3: %d\n", v3.ResultVal );
-			printf("v4: %d\n", v4.ResultVal );
-			printf("Application exit...\n");
-			return 0;
-		}
-	\endcode
-*/
-
-/**
-	\page pgFaq F.A.Q.
-	.
-
-	Welcome to the FAQ.
-
-	Q: Why numbered function names, eg: \ref ScpScript::parse2() ".parse2()" or \ref ScpScript::eval2() ".eval2()" ?\n
-	A: To make documentating process clearer and easier.\n
-*/
-
-/**
-	\page pgPreproc Pseudo Preprocessor
-	.
-
-	Please note that this preprocessor uses rather simple parsing and won't
-	provide features at the level same as, for example, C preprocessor.
-	This is a simple extension - the
-	<a href="https://www.ecma-international.org/ecma-262/5.1/">ECMA Script</a> specification
-	tells nothing about - with the purpose to provide some conditional scripting
-	in otherwise unconditional expression evaluating (at the current stage
-	of the scripting library).
-
-	Pseudo preprocessor values can be set using
-	\ref ScpScript::setCondDef() ".setCondDef()" and are limited to boolean
-	values, true if variable has been set or false otherwise.
-	They can only be modified on the C++ end, using mentioned function.
-	It is not possible to set or modify them from the scripts.
-	All preprocessor values must be set before any parsing.
-
-	With this functionality it is possible to
-	execute only selected parts of the script, rather than having to always
-	execute it entirely.
-*/
-
-/**
-	\page pgHostObjects Host Object Routines
-	.
-
-	ScpHostObject \n
-	ScpScript::addHostObject() \n
-	ScpScript::addHostOperator() \n
-	ScpHostOp \n
-	ScpHostTOperator \n
-	ScpMultiplicativeOperator \n
-	ScpPlusOperator \n
-	ScpAsssignmentOperator \n
-*/
-
-/**
-	\page pgParseEval Script Parsing and Evaluating Routines
-	.
-
-	ScpScript::parse2() \n
-	ScpScript::parse3() \n
-	ScpScript::eval2() \n
-	ScpScript::eval3() \n
-	ScpScript::parseAndEval() \n
-	ScpScript::showMeTheError2() \n
-	ScpScript::showMeTheError3() \n
-	ScpErr class \n
-	\ref SCP_AF_AutoParse \n
-*/
-
-;
 /// Tokenizes the script.
 bool ScpScript::tokenize2( ScpErr& err2 )
 {
@@ -374,7 +210,7 @@ bool ScpScript::parse3( int flags3, ScpErr* err )
 		LastError = err2;
 		return 0;
 	}
-	if( !Defs.empty() ){
+	if( !(Flags2 & SCP_SF_DisablePreproc) ){
 		// call pseudo preprocessor here, that modifies tokens list if needed.
 		if( !preprocessCondDefs( err2 ) ){
 			ScpSp::finalizeErr( err2, ScriptCStr.first, ScriptCStr.second );
@@ -687,7 +523,7 @@ bool ScpScript::evalHostObjectPair( const ScpEvalPair& evp )
 			ScpHostObjVal* hov2 = dynamic_cast<ScpHostObjVal*>( evp.rval );
 			if( !hov2 || !( hobjB = dynamic_cast<ScpHostObject*>( hov2->getHostObValue() ) )){
 				*evp.iErrIs = 1;
-				*evp.eErr = SCP_EE_NoSuchHostObject;
+				*evp.eErr = SCP_EE_NoSuchHostObject2;
 				return 0;
 			}
 		}else
@@ -716,6 +552,49 @@ bool ScpScript::evalHostObjectPair( const ScpEvalPair& evp )
 	*evp.val2 = hov;
 	return 1;
 }
+bool ScpScript::evalHostFunctionCall( const ScpEvalCallAndArgs& eca )
+{
+	std::vector<ScpNamedVal>::const_iterator a;
+	std::vector<SHo>::iterator b, endd = HostObjs.end();
+	std::vector<ScpHostObject*> hostobjs;
+	std::vector<ScpHostObject*>::const_iterator c;
+	int i;
+	for( i=0, a = eca.argvals->begin(); a != eca.argvals->end(); ++a, i++ ){
+		ScpHostObject* hobj = 0;
+		SHo shoA( a->name3.c_str() );
+		if( (b=std::find_if( HostObjs.begin(), endd, shoA )) != endd ){
+			hobj = b->hobj;
+		}else{
+			ScpHostObjVal* oval = dynamic_cast<ScpHostObjVal*>( a->val3 );
+			if(oval)
+				hobj = dynamic_cast<ScpHostObject*>( oval->getHostObValue() );
+		}
+		if( !hobj ){
+			printf("SCP_EE_NoSuchHostObject3: [%s]\n", a->name3.c_str() );
+			*eca.iErrIs = i;
+			*eca.eErr   = SCP_EE_NoSuchHostObject3;
+			return 0;
+		}
+		hostobjs.push_back( hobj );
+	}
+	ScpHostObject* retv = 0;
+	*eca.iErrIs = 0;
+	*eca.eErr   = SCP_EE_UnkErrOnUsrCall;
+	ScpHoc hoc = { (int)(hostobjs.size()-1), &hostobjs[1], eca.iErrIs, eca.eErr, &retv, };
+	if( !hostobjs[0]->evaluateFunctionCall( hoc ) )
+		return 0;
+	if( !retv ){
+		*eca.val4 = new ScpDummyVal( eca.tokenAt );
+	}else{
+		c = std::find( hostobjs.begin(), hostobjs.end(), retv );
+		bool bIsInScrScopeOnlyy = ( c == hostobjs.end() );
+		ScpHostObjVal* hov = new ScpHostObjVal( "", eca.tokenAt, retv, bIsInScrScopeOnlyy );
+		*eca.val4 = hov;
+	}
+	return 1;
+}
+
+
 
 
 

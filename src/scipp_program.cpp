@@ -118,7 +118,7 @@ bool ScpTryProgramParse::eval6( const ScpEval& ev2 )
 		}
 		assert( !ev2.out4.err4.errpos.ptr );
 		/// \todo here, handling when expression is returning the 'return' value.
-		///       for this to work, other things must be implemented too.
+		///       for this to work, other things must be implemented as well.
 		ev3.clear5();
 	}
 	// TODO: return the 'void' value here.

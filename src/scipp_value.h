@@ -26,10 +26,17 @@ public:
 	ScpSubtleRefVal( const char* szVarname, const ScpToken& );
 };
 
+/// For default value purposes.
+/// Aka void value, eg, when host object call returns no value, TBD.
+class ScpDummyVal : public ScpValue {
+public:
+	ScpDummyVal( const ScpToken& );
+};
+
 class ScpHostObjVal : public ScpValue {
 public:
-	ScpHostObjVal( const char* szVarname, const ScpToken&, ScpHostObject* HostObj_, bool bIsInScrScopeOnly_ );
-	virtual ~ScpHostObjVal();
+	;              ScpHostObjVal( const char* szVarname, const ScpToken&, ScpHostObject* HostObj_, bool bIsInScrScopeOnly_ );
+	virtual        ~ScpHostObjVal();
 	ScpHostObject* getHostObValue() {return HostObj;}
 private:
 	ScpHostObject* HostObj;

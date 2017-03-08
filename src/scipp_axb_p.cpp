@@ -2,6 +2,7 @@
 #include "scipp_axb_p.h"
 #include <algorithm>
 #include <assert.h>
+#include <stdio.h>
 #include "scipp_axb_e.h"
 #include "scipp_program.h"
 
@@ -10,6 +11,8 @@ ScpTryAxBExpr        scpTryMulExpr("*","/","%");
 ScpTryAdditiveExpr   scpTryAdditiveExpr;
 ScpTryAsgmntExpr     scpTryAsgmntExpr;
 ScpTryPrimaryExpr    scpTryPrimaryExpr;
+ScpTryArgumentsExpr  scpTryArgumentsExpr;
+ScpTryCallExpr       scpTryCallExpr;
 
 bool ScpTryIdentifierExpr::tryy( const ScpParse& inp )
 {
@@ -54,11 +57,12 @@ ScpTryAxBExpr( const char* op1,const char* op2, const char* op3, const char* op4
 }
 ScpITryParser* ScpTryAxBExpr::getLeftAxBExprParser()
 {
-	/// \todo fully quantified is to start at unary expression,
-	///       ie. if multiplicatve expression here (not derived class). eg:
+	/// \todo here, fully quantified is to start at unary expression,
+	///       ie. on multiplicatve expression here (not derived class). eg:
 	///       UnaryExpression->...-> LeftHandSideExpression->...
-	///       -> MemberExpression -> PrimaryExpression ...
-	return &scpTryPrimaryExpr; // ScpTryPrimaryExpr*
+	///       -> CallExpression -> MemberExpression -> PrimaryExpression ...
+	//return &scpTryPrimaryExpr; // ScpTryPrimaryExpr*
+	return &scpTryCallExpr; // ScpTryCallExpr*
 }
 ScpTryAdditiveExpr::ScpTryAdditiveExpr()
 	: ScpTryAxBExpr("+","-")
@@ -98,7 +102,7 @@ bool ScpTryAxBExpr::tryy( const ScpParse& inp )
 	if( !getLeftAxBExprParser()->tryy( inp ) ) // UnaryExpression->...->PrimaryExpression.
 		return 0;
 	if( !inp.out3.expr2 )
-		return 1;
+			return 1;
 	ScpTCITR op = inp.out3.endded3;
 	if( op == inp.tokenend )
 		return 1;
@@ -123,6 +127,7 @@ bool ScpTryAxBExpr::tryy( const ScpParse& inp )
 	}
 	ScpIExpr* exprA = inp.out3.expr2; // have the left-side expression, store it.
 	inp.out3.expr2 = 0;
+	//extractExpr()
 
 	// Note: recursive 'tryy' call. search for the right-side expression.
 	ScpParse in2( inp, a, inp.tokenend, inp.out3 );
@@ -138,6 +143,7 @@ bool ScpTryAxBExpr::tryy( const ScpParse& inp )
 	}
 	ScpIExpr* exprB = inp.out3.expr2; // have the right-side expression, store it.
 	inp.out3.expr2 = 0;
+	//extractExpr()
 	//
 	ScpAxBExpr* mulexpr = 0;//new ScpAxBExpr( exprA, *op, exprB );
 	if( op->tkn2 != "=" ){
@@ -178,7 +184,6 @@ bool ScpTryGroupingExpr::tryy( const ScpParse& inp )
 	if( a->tpe != SCP_ET_Op || a->tkn2 != "\x28" ){ // 0x28: parentheses open character.
 		// dispatch the case when there is no parenthese open, not a grouping expr.
 		return getInnerExprParser()->tryy( inp );
-		//return 1;
 	}else{
 		ScpTCITR b = a; ++b;// + 1;
 		if( b == inp.tokenend ){
@@ -199,7 +204,7 @@ bool ScpTryGroupingExpr::tryy( const ScpParse& inp )
 			return 0;
 		}
 		//printf("[%s]\n", b->tkn2.c_str() );
-		// make sure have the matching brace close character.
+		// make sure have the matching parenthese close character.
 		if( b->tpe != SCP_ET_Op || b->tkn2 != "\x29" ){ // 0x29: parenthese close character.
 			assert( inp.out3.expr2 );
 			//printf("SCP_EE_NoGroupCloseHere:%d\n", SCP_EE_NoGroupCloseHere );
@@ -212,10 +217,98 @@ bool ScpTryGroupingExpr::tryy( const ScpParse& inp )
 		return 1;
 	}
 }
-
-
-
-
-
+bool ScpTryArgumentsExpr::tryy( const ScpParse& inp )
+{
+	if( inp.tokenbgn == inp.tokenend )
+		return 1;
+	ScpTCITR a = inp.tokenbgn;
+	if( a->tpe != SCP_ET_Op || a->tkn2 != "\x28" ){ // 0x28: parentheses open character.
+		// there is no other case, arguments must begin with parenthese open.
+		return 1;
+	}
+	ScpTCITR b = a; int i = 0;
+	ScpArgListExpr* argsExpr = new ScpArgListExpr( *a, *a );
+	bool bSuccess = 0;
+	for( ;; i++ ){  // parsing for each argument in the arg-list expression.
+		if( ++b == inp.tokenend ){
+			inp.errClear( ScpErr( a->tkn, SCP_EE_EofOnParse ) );
+			break; //bSuccess=0
+		}
+		// only on first loop, allow parenthese close here, empty arg-list.
+		if( !i && b->tpe == SCP_ET_Op && b->tkn2 == "\x29" ){ // 0x29: parenthese close chr.
+			bSuccess = 1;
+			break;
+		}
+		ScpParse in2( inp, b, inp.tokenend, inp.out3 );
+		if( !scpTryAsgmntExpr.tryy( in2 ) )
+			break; //bSuccess=0
+		if( !inp.out3.expr2 ){
+			inp.errClear( ScpErr( a->tkn, SCP_EE_ArgListNoAsgmntExpr ) );
+			break; //bSuccess=0
+		}
+		ScpIExpr* expr = inp.extractExpr(); // store the expression of the single argument.
+		assert( expr );
+		argsExpr->addArgExpressin( expr, 1 );
+		b = inp.out3.endded3;
+		if( b == inp.tokenend ){
+			inp.errClear( ScpErr( a->tkn, SCP_EE_EofOnParse ) );
+			break; //bSuccess=0
+		}
+		if( b->tpe != SCP_ET_Op ){
+			inp.errClear( ScpErr( b->tkn, SCP_EE_NoCommaOrPClHere ) );
+			break; //bSuccess=0
+		}
+		// either of two here: (1) parenthese (2) comma.
+		if( b->tkn2 != "\x29" && b->tkn2 != "," ){ // 0x29: parenthese close character.
+			inp.errClear( ScpErr( b->tkn, SCP_EE_NoCommaOrPClHere2 ) );
+			break; //bSuccess=0
+		}
+		if( b->tkn2 != "," ){
+			bSuccess = 1;
+			break;
+		}
+	}
+	if(!bSuccess){
+		delete argsExpr;
+		argsExpr = 0;
+		return 0;
+	}
+	inp.out3.expr2   = argsExpr;
+	inp.out3.endded3 = ++b;
+	return 1;
+}
+bool ScpTryCallExpr::tryy( const ScpParse& inp )
+{
+	ScpTCITR a = inp.tokenbgn;
+	/// \todo MemberExpression instead of primary-expr here.
+	if( !scpTryPrimaryExpr.tryy(inp) ) //ScpTryPrimaryExpr*
+		return 0;
+	if( !inp.out3.expr2 )
+		return 1;
+	ScpIExpr* leftexpr = inp.extractExpr();
+	ScpTCITR b = inp.out3.endded3;
+	//
+	if( !scpTryArgumentsExpr.tryy( ScpParse( inp, b ) ) ){ //ScpTryArgumentsExpr*
+		delete leftexpr;
+		return 0;
+	}else if( !inp.out3.expr2 ){
+		inp.out3.expr2   = leftexpr;
+		inp.out3.endded3 = b;
+		return 1;
+	}
+	ScpIExpr* arglistexpr = inp.extractExpr();
+	ScpArgListExpr* arglistexpr2 = dynamic_cast<ScpArgListExpr*>( arglistexpr );
+	assert(arglistexpr2);
+	{
+		// Try any consecutive call expression as optional.
+		// Note-1: recursive calls.
+		// Note-2: this must be disabled untill member expression implemented (?).
+		//if( !this->tryy( inp ) ){
+		//	return 0;
+		//}
+	}
+	inp.out3.expr2 = new ScpCallExpr( *a, leftexpr, arglistexpr2 );
+	return 1;
+}
 
 

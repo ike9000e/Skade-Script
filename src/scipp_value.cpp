@@ -24,6 +24,10 @@ ScpSubtleRefVal::ScpSubtleRefVal( const char* szVarname, const ScpToken& tknn )
 	: ScpValue(szVarname,&tknn) //, Varname(szVarname)
 {
 }
+ScpDummyVal::ScpDummyVal( const ScpToken& tknn )
+	: ScpValue("ScpDummyVal",&tknn)
+{
+}
 ScpHostObjVal::
 ScpHostObjVal( const char* szVarname, const ScpToken& tknn, ScpHostObject* HostObj_, bool bIsInScrScopeOnly_ )
 	: ScpValue(szVarname,&tknn), HostObj(HostObj_), bIsInScrScopeOnly(bIsInScrScopeOnly_)
