@@ -1,6 +1,0 @@
-<map id="ScpGroupingExpr::strPrint2" name="ScpGroupingExpr::strPrint2">
-<area shape="rect" id="node2" href="$structScpPrnt.html#a7026e1095ba8d2d041904cf392214fa3" title="ScpPrnt::addTabs" alt="" coords="275,5,403,33"/>
-<area shape="rect" id="node3" href="$classScpStr.html#a571d91f0ae67c982bd1d4d4946dd7045" title="ScpStr::a" alt="" coords="300,57,377,85"/>
-<area shape="rect" id="node4" href="$classScpIExpr.html#a9766e3c00c86daca958fe770e8c45830" title="Returns enclosing tokens, if any." alt="" coords="237,109,440,137"/>
-<area shape="rect" id="node5" href="$classScpIExpr.html#aad6748d5f473f3e8310aca452bce1b02" title="ScpIExpr::strPrint2" alt="" coords="272,161,405,189"/>
-</map>

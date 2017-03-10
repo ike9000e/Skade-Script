@@ -1,6 +1,0 @@
-<map id="ScpHostTOperator&lt; TVar &gt;" name="ScpHostTOperator&lt; TVar &gt;">
-<area shape="rect" id="node3" href="$classScpAsssignmentOperator.html" title="Assignment operator, the &#39;=&#39;." alt="" coords="376,5,551,49"/>
-<area shape="rect" id="node4" href="$classScpMultiplicativeOperator.html" title="Multiplicative operator (&quot;*&quot;)." alt="" coords="377,73,550,117"/>
-<area shape="rect" id="node5" href="$classScpPlusOperator.html" title="Plus (or additive) operator (&quot;+&quot;)." alt="" coords="376,141,551,169"/>
-<area shape="rect" id="node2" href="$classScpHostOp.html" title="Interface for building operators that get imported from the host environment (C++ end) into the scrip..." alt="" coords="5,81,96,109"/>
-</map>

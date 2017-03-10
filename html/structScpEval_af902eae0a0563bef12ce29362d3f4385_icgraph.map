@@ -1,6 +1,0 @@
-<map id="ScpEval::clear5" name="ScpEval::clear5">
-<area shape="rect" id="node2" href="$structScpEval.html#a27a89ee04824415ede50848d72f24358" title="ScpEval::errClear2" alt="" coords="176,13,309,41"/>
-<area shape="rect" id="node5" href="$classScpTryProgramParse.html#ab9ed445bf66f41f825cb1ee6ed9c12b1" title="ScpTryProgramParse\l::eval6" alt="" coords="168,65,317,109"/>
-<area shape="rect" id="node3" href="$classScpAxBExpr.html#ae7fe13efca2f54a30895581c6cc6806a" title="ScpAxBExpr::eval6" alt="" coords="365,13,501,41"/>
-<area shape="rect" id="node4" href="$classScpAssignmentExpr.html#a7f428374334d82d16f585e85e48b2ce7" title="ScpAssignmentExpr::\leval6" alt="" coords="549,5,699,49"/>
-</map>

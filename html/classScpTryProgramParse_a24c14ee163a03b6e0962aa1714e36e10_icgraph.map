@@ -1,7 +1,0 @@
-<map id="ScpTryProgramParse::setOriginalScript" name="ScpTryProgramParse::setOriginalScript">
-<area shape="rect" id="node2" href="$classScpScript.html#afba32736f1063845de166ee8051c7fca" title="Parses the script with an option to return the error info." alt="" coords="203,32,331,60"/>
-<area shape="rect" id="node3" href="$classScpScript.html#aabfc6a84d76783a41a9dd094ab00edd7" title="Parses the script." alt="" coords="544,5,672,33"/>
-<area shape="rect" id="node5" href="$classScpScript.html#a39d192e8262639960773e82211b36b32" title="Evaluates the script." alt="" coords="379,57,496,85"/>
-<area shape="rect" id="node4" href="$classScpScript.html#a9a428a7e8227768105701f023b6c4997" title="Parse and evaluates script in one call." alt="" coords="720,32,889,60"/>
-<area shape="rect" id="node6" href="$classScpScript.html#ad474ee65c8867de69a00eda54c88af51" title="Evaluates the script." alt="" coords="549,57,667,85"/>
-</map>

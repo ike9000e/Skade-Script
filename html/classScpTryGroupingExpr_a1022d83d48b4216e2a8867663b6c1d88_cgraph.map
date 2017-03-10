@@ -1,6 +1,0 @@
-<map id="ScpTryGroupingExpr::tryy" name="ScpTryGroupingExpr::tryy">
-<area shape="rect" id="node2" href="$classScpTryGroupingExpr.html#a6f062f3449d594916e9f84627f260201" title="ScpTryGroupingExpr\l::getInnerExprParser" alt="" coords="199,5,344,49"/>
-<area shape="rect" id="node3" href="$classScpITryParser.html#aa7a3a26770787de0a497a224377d2051" title="Tries parsing for expression at the input position." alt="" coords="203,73,339,101"/>
-<area shape="rect" id="node4" href="$structScpParse.html#a472090f2fcdf00a23d2e5e5cdfb4e384" title="ScpParse::errClear" alt="" coords="203,125,339,153"/>
-<area shape="rect" id="node5" href="$structScpParse.html#a3d6be8cb345affe6f90746bc8d7541d9" title="ScpParse::clear2" alt="" coords="392,125,516,153"/>
-</map>
