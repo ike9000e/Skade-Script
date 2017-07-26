@@ -7,3 +7,5 @@ Provided are Doxygen generated API docs in two formats, zipped html and CHM.
 
 Source code and documentation will be available as zip archives from now on.
 Having to deal with *git* or *svn* tools to publish my work is a beautiful waste of time.
+
+\include "./misc_example/code.cpp"
