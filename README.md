@@ -10,4 +10,4 @@ Having to deal with *git* or *svn* tools to publish my work is a beautiful waste
 
 <a href='./misc_example/example_01.cpp'>View Example</a>
 
-<iframe src='./misc_example/example_01.cpp'></iframe>
+<iframe src="https://github.com/ikk00/Skade-Script/tree/master/misc_example/example_01.cpp"></iframe>
