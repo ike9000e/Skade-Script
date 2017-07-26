@@ -11,10 +11,8 @@ Having to deal with *git* or *svn* tools to publish my work is a beautiful waste
 ```
 #include <stdio.h>
 #include <string>
-#include "scipp/scipp_script.h"
-
-// Example class that can be exported to the scripting engine.
-// Once visible in the scripts, values can be added or multiplied.
-// Additionally, variable can be used as a function and call to it can
-// be made using random number of arguments.
 ```
+
+[./misc_example/code.cpp]
+
+
