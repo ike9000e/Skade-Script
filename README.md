@@ -13,6 +13,6 @@ Having to deal with *git* or *svn* tools to publish my work is a beautiful waste
 #include <string>
 ```
 
-[./misc_example/code.cpp]
+[./misc_example/code.cpp Example]
 
 
