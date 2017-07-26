@@ -9,3 +9,5 @@ Source code and documentation will be available as zip archives from now on.
 Having to deal with *git* or *svn* tools to publish my work is a beautiful waste of time.
 
 <a href='./misc_example/example_01.cpp'>View Example</a>
+
+<iframe src='./misc_example/example_01.cpp'></iframe>
