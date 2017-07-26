@@ -15,4 +15,4 @@ Having to deal with *git* or *svn* tools to publish my work is a beautiful waste
 
 [./misc_example/code.cpp Example]
 
-
+<a href='./misc_example/code.cpp'>Example</a>
