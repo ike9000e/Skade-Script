@@ -7,6 +7,3 @@ Welcome to the C++ scripting mini engine that aims to implement a handfull set o
 
 # For full documenataion please see attached archive files, either in root directory or attached to the releases.
 Provided are Doxygen generated API docs in two formats, zipped html and CHM.
-
-Source code and documentation will be available as zip archives from now on.
-Having to deal with *git* or *svn* tools to publish my work is a beautiful waste of time.
